@@ -13,6 +13,7 @@ public class DiningPhilosophers
 	 * Data members
 	 * ------------
 	 */
+	
 
 	/**
 	 * This default may be overridden from the command line

@@ -28,7 +28,22 @@ public class Philosopher extends BaseThread
 		try
 		{
 			// ...
-			sleep((long)(Math.random() * TIME_TO_WASTE));
+			//Enter the eating action	
+			System.out.println("Philosopher with ID " + getTID() + " can pick up the chopsticks! ");
+			System.out.println("Philosopher with ID " + getTID() + " starts eating now! ");
+			
+			//the action time is within 1000
+			long start_time = System.currentTimeMillis();
+			long end_time = 0;			
+			while((end_time - start_time) < TIME_TO_WASTE) {				
+				Thread.yield();
+				sleep((long)(Math.random() * TIME_TO_WASTE));
+				//Thread.yield();	
+				end_time = System.currentTimeMillis();
+			}
+				
+			System.out.println("Philosopher with ID " + getTID() + " finish eating");
+						
 			// ...
 		}
 		catch(InterruptedException e)
@@ -49,7 +64,32 @@ public class Philosopher extends BaseThread
 	 */
 	public void think()
 	{
-		// ...
+		try
+		{
+			// ...
+			//Enter the thinking action		
+			System.out.println("Philosopher with ID " + getTID() + " starts thinking now! ");
+			
+			//the action time is within 1000
+			long start_time = System.currentTimeMillis();
+			long end_time = 0;			
+			while((end_time - start_time) < TIME_TO_WASTE) {				
+				Thread.yield();
+				sleep((long)(Math.random() * TIME_TO_WASTE));
+				//Thread.yield();			
+			}
+				
+			System.out.println("Philosopher with ID " + getTID() + " finish thinking");
+			
+			
+			// ...
+		}
+		catch(InterruptedException e)
+		{
+			System.err.println("Philosopher.think():");
+			DiningPhilosophers.reportException(e);
+			System.exit(1);
+		}
 	}
 
 	/**
@@ -62,12 +102,36 @@ public class Philosopher extends BaseThread
 	 */
 	public void talk()
 	{
-		// ...
-
-		saySomething();
-
-		// ...
+		try
+		{
+			// ...
+			//Enter the talking action		
+			System.out.println("Philosopher with ID " + getTID() + " starts talking now! ");
+			
+			//the action time is within 1000
+			long start_time = System.currentTimeMillis();
+			long end_time = 0;			
+			while((end_time - start_time) < TIME_TO_WASTE) {				
+				Thread.yield();
+				sleep((long)(Math.random() * TIME_TO_WASTE));
+				saySomething();
+				//Thread.yield();			
+			}
+				
+			System.out.println("Philosopher with ID " + getTID() + " finish talking");
+			
+			
+			// ...
+		}
+		catch(InterruptedException e)
+		{
+			System.err.println("Philosopher.eat():");
+			DiningPhilosophers.reportException(e);
+			System.exit(1);
+		}
 	}
+	
+	
 
 	/**
 	 * No, this is not the act of running, just the overridden Thread.run()
