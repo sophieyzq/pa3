@@ -76,7 +76,8 @@ public class Philosopher extends BaseThread
 			while((end_time - start_time) < TIME_TO_WASTE) {				
 				Thread.yield();
 				sleep((long)(Math.random() * TIME_TO_WASTE));
-				//Thread.yield();			
+				//Thread.yield();	
+				end_time = System.currentTimeMillis();
 			}
 				
 			System.out.println("Philosopher with ID " + getTID() + " finish thinking");
@@ -115,7 +116,8 @@ public class Philosopher extends BaseThread
 				Thread.yield();
 				sleep((long)(Math.random() * TIME_TO_WASTE));
 				saySomething();
-				//Thread.yield();			
+				//Thread.yield();	
+				end_time = System.currentTimeMillis();
 			}
 				
 			System.out.println("Philosopher with ID " + getTID() + " finish talking");
@@ -140,6 +142,8 @@ public class Philosopher extends BaseThread
 	{
 		for(int i = 0; i < DiningPhilosophers.DINING_STEPS; i++)
 		{
+			think();
+			
 			DiningPhilosophers.soMonitor.pickUp(getTID());
 
 			eat();
@@ -153,14 +157,18 @@ public class Philosopher extends BaseThread
 			 * A decision is made at random whether this particular
 			 * philosopher is about to say something terribly useful.
 			 */
-			if(true == false)
+			/*if(true == false)
 			{
 				// Some monitor ops down here...
 				talk();
 				// ...
-			}
-
-			yield();
+			}*/
+			DiningPhilosophers.soMonitor.requestTalk(getTID());
+			talk();
+			DiningPhilosophers.soMonitor.endTalk(getTID());
+			think();
+				
+			//yield();
 		}
 	} // run()
 
