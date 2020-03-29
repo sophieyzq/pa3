@@ -1,5 +1,6 @@
 package pa3;
 
+import pa3.Monitor.Status;
 import pa3.common.BaseThread;
 
 /**
@@ -150,9 +151,7 @@ public class Philosopher extends BaseThread
 			DiningPhilosophers.soMonitor.putDown(getTID());
 
 			think();
-			
-			
-
+						
 			/*
 			 * TODO:
 			 * A decision is made at random whether this particular
@@ -168,10 +167,26 @@ public class Philosopher extends BaseThread
 			DiningPhilosophers.soMonitor.requestTalk(getTID());
 			talk();
 			DiningPhilosophers.soMonitor.endTalk(getTID());
+			
 			//think();
 			System.out.println("==========The philosopher " + getTID() + " ends step # " + (i+1) + "=========");
+			//System.out.println("==========The philosopher " + getTID() + "  status is " + (DiningPhilosophers.soMonitor.getState(getTID())) + " =========");
+			
+
 				
 			//yield();
+		}
+		System.out.println("==========The philosopher " + getTID() + " ends all steps !=========");
+		
+		//set status is dead
+		
+		DiningPhilosophers.soMonitor.setState(getTID(), Status.DEAD);
+		
+		
+		for(int i = 1; i <= DiningPhilosophers.DEFAULT_NUMBER_OF_PHILOSOPHERS; i++ ) {
+			System.out.println("==========The philosopher " + i + "  status is " + (DiningPhilosophers.soMonitor.getState(i)) + " =========");
+			
+
 		}
 	} // run()
 

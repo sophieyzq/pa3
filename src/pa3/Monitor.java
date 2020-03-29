@@ -15,7 +15,7 @@ public class Monitor {
 	 * ------------ Data members ------------
 	 */
 	enum Status {
-		EATING, HUNGRY, THINKING, TALKING
+		EATING, HUNGRY, THINKING, TALKING, DEAD
 	};
 
 	Status[] state;
@@ -23,7 +23,7 @@ public class Monitor {
 	private Lock eatingLocker;
 	private Lock talkingLocker;
 	private Lock methodLocker;
-	private Condition[] condVar;
+	private static Condition[] condVar;
 
 	/**
 	 * Constructor
@@ -94,6 +94,7 @@ public class Monitor {
 	public synchronized void testTalking(final int piTID) {
 		// use the synchronization of object, otherwise will throw the illegal monitor
 		// exception while kusing the notify method
+
 		synchronized (condVar[piTID]) {
 			// methodLocker.lock();
 
@@ -106,12 +107,13 @@ public class Monitor {
 					numTalking++;
 				}
 			}
-			// System.out.println(numTalking);
+			 System.out.println("numTalking is "+numTalking);
 
-			if (numTalking == 0) {
+			if (numTalking == 0 && state[piTID] != Status.DEAD) {
 				state[piTID] = Status.TALKING;
 				// System.out.println("thread " + piTID + " signal wakes up !!");
 				condVar[piTID].notify();
+
 				// System.out.println("thread " + piTID + " signal finish !!");
 
 			}
@@ -141,6 +143,17 @@ public class Monitor {
 		return piTID + 1;
 
 	}
+	
+	public Condition getCondVar(int piTID) {
+		return condVar[piTID];
+	}
+	
+	public Status getState(int piTID) {
+		return state[piTID];
+	}
+	public void setState(int piTID, Status s) {
+		state[piTID] = s;
+	}
 
 	/**
 	 * Grants request (returns) to eat when both chopsticks/forks are available.
@@ -165,7 +178,7 @@ public class Monitor {
 							"Philosopher with ID " + piTID + " can't pick up the chopsticks and need to wait! ");
 					// condVar[piTID].wait();
 					// condVar[piTID].wait(Philosopher.TIME_TO_WASTE);
-					condVar[piTID].wait();
+					condVar[piTID].wait(1000);
 					System.out.println("The philosopher with ID " + piTID + " can not wait more and neighbour should give up eating");
 
 					putDown((leftIndex(piTID, piNumberOfPhilosophers)));
@@ -232,7 +245,14 @@ public class Monitor {
 			if (state[piTID] != Status.TALKING) {
 				System.out.println("Philosopher with ID " + piTID + " has no right to talking and need to wait! ");
 				try {
-					condVar[piTID].wait();
+					condVar[piTID].wait(1000);
+					for(int i = 1; i <= piNumberOfPhilosophers; i++) {
+						if(state[i] != Status.DEAD) {
+							state[i] = Status.THINKING;
+						}
+					}
+					state[piTID] = Status.TALKING;
+					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -265,7 +285,7 @@ public class Monitor {
 				// so we have to provide
 				// argument + 1
 				rand = random.nextInt(piNumberOfPhilosophers + 1);
-				if (rand != 0)
+				if (rand != 0 && rand != piTID)
 					break;
 			}
 
