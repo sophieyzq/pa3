@@ -27,9 +27,7 @@ public class Philosopher extends BaseThread
 	{
 		try
 		{
-			// ...
 			//Enter the eating action	
-			System.out.println("Philosopher with ID " + getTID() + " can pick up the chopsticks! ");
 			System.out.println("Philosopher with ID " + getTID() + " starts eating now! ");
 			
 			//the action time is within 1000
@@ -40,11 +38,9 @@ public class Philosopher extends BaseThread
 				sleep((long)(Math.random() * TIME_TO_WASTE));
 				//Thread.yield();	
 				end_time = System.currentTimeMillis();
-			}
-				
-			System.out.println("Philosopher with ID " + getTID() + " finish eating");
-						
-			// ...
+			}				
+			//System.out.println("Philosopher with ID " + getTID() + " finish eating");
+
 		}
 		catch(InterruptedException e)
 		{
@@ -120,8 +116,7 @@ public class Philosopher extends BaseThread
 				end_time = System.currentTimeMillis();
 			}
 				
-			System.out.println("Philosopher with ID " + getTID() + " finish talking");
-			
+			//System.out.println("Philosopher with ID " + getTID() + " finish talking");			
 			
 			// ...
 		}
@@ -142,6 +137,10 @@ public class Philosopher extends BaseThread
 	{
 		for(int i = 0; i < DiningPhilosophers.DINING_STEPS; i++)
 		{
+			//System.out.println("==================================");
+			System.out.println("==========The philosopher " + getTID() + " step # is " + (i+1) + "=========");
+			//System.out.println("==================================");
+			
 			think();
 			
 			DiningPhilosophers.soMonitor.pickUp(getTID());
@@ -151,6 +150,8 @@ public class Philosopher extends BaseThread
 			DiningPhilosophers.soMonitor.putDown(getTID());
 
 			think();
+			
+			
 
 			/*
 			 * TODO:
@@ -163,10 +164,12 @@ public class Philosopher extends BaseThread
 				talk();
 				// ...
 			}*/
+			
 			DiningPhilosophers.soMonitor.requestTalk(getTID());
 			talk();
 			DiningPhilosophers.soMonitor.endTalk(getTID());
-			think();
+			//think();
+			System.out.println("==========The philosopher " + getTID() + " ends step # " + (i+1) + "=========");
 				
 			//yield();
 		}

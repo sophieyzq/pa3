@@ -24,7 +24,7 @@ public class DiningPhilosophers
 	 * Dining "iterations" per philosopher thread
 	 * while they are socializing there
 	 */
-	public static final int DINING_STEPS = 10;
+	public static final int DINING_STEPS = 1;
 
 	/**
 	 * Our shared monitor for the philosphers to consult
@@ -59,11 +59,11 @@ public class DiningPhilosophers
 
 			// Let 'em sit down
 			for(int j = 0; j < iPhilosophers; j++)
-			{
+			{				
 				aoPhilosophers[j] = new Philosopher();
 				aoPhilosophers[j].start();
 			}
-
+			
 			System.out.println
 			(
 				iPhilosophers +
