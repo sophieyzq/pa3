@@ -24,7 +24,7 @@ public class DiningPhilosophers
 	 * Dining "iterations" per philosopher thread
 	 * while they are socializing there
 	 */
-	public static final int DINING_STEPS = 2;
+	public static final int DINING_STEPS = 10;
 
 	/**
 	 * Our shared monitor for the philosphers to consult

@@ -178,8 +178,8 @@ public class Monitor {
 							"Philosopher with ID " + piTID + " can't pick up the chopsticks and need to wait! ");
 					// condVar[piTID].wait();
 					// condVar[piTID].wait(Philosopher.TIME_TO_WASTE);
-					condVar[piTID].wait(1000);
-					System.out.println("The philosopher with ID " + piTID + " can not wait more and neighbour should give up eating");
+					condVar[piTID].wait(500);
+					System.out.println("The philosopher with ID " + piTID + " can pick up the chopsticks");
 
 					putDown((leftIndex(piTID, piNumberOfPhilosophers)));
 					putDown((rightIndex(piTID, piNumberOfPhilosophers)));
@@ -246,11 +246,15 @@ public class Monitor {
 				System.out.println("Philosopher with ID " + piTID + " has no right to talking and need to wait! ");
 				try {
 					condVar[piTID].wait(1000);
+					//condVar[piTID].wait();
+					
+					
 					for(int i = 1; i <= piNumberOfPhilosophers; i++) {
 						if(state[i] != Status.DEAD) {
 							state[i] = Status.THINKING;
 						}
 					}
+					
 					state[piTID] = Status.TALKING;
 					
 				} catch (InterruptedException e) {
@@ -285,7 +289,8 @@ public class Monitor {
 				// so we have to provide
 				// argument + 1
 				rand = random.nextInt(piNumberOfPhilosophers + 1);
-				if (rand != 0 && rand != piTID)
+				//if (rand != 0 && rand != piTID && state[rand] != Status.DEAD )
+				if (rand != 0 && state[rand] != Status.DEAD )
 					break;
 			}
 
