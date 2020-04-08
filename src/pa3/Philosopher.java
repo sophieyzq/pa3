@@ -2,6 +2,7 @@ package pa3;
 
 import pa3.Monitor.Status;
 import pa3.common.BaseThread;
+import pa3.DiningPhilosophers;
 
 /**
  * Class Philosopher.
@@ -26,7 +27,7 @@ public class Philosopher extends BaseThread
 	 */
 	public void eat()
 	{
-		try
+		/*try
 		{
 			//Enter the eating action	
 			System.out.println("Philosopher with ID " + getTID() + " starts eating now! ");
@@ -37,7 +38,7 @@ public class Philosopher extends BaseThread
 			while((end_time - start_time) < TIME_TO_WASTE) {				
 				Thread.yield();
 				sleep((long)(Math.random() * TIME_TO_WASTE));
-				//Thread.yield();	
+				Thread.yield();	
 				end_time = System.currentTimeMillis();
 			}				
 			//System.out.println("Philosopher with ID " + getTID() + " finish eating");
@@ -48,7 +49,20 @@ public class Philosopher extends BaseThread
 			System.err.println("Philosopher.eat():");
 			DiningPhilosophers.reportException(e);
 			System.exit(1);
+		}*/
+		
+		//Enter the eating action	
+		System.out.println("Philosopher with ID " + getTID() + " starts eating now! ");	
+		try {
+			Thread.yield();
+			sleep((long)(Math.random() * TIME_TO_WASTE));
+			Thread.yield();
+		} catch (InterruptedException e) {
+			System.err.println("Philosopher.eat():");
+			DiningPhilosophers.reportException(e);
+			System.exit(1);
 		}
+		
 	}
 
 	/**
@@ -68,14 +82,14 @@ public class Philosopher extends BaseThread
 			System.out.println("Philosopher with ID " + getTID() + " starts thinking now! ");
 			
 			//the action time is within 1000
-			long start_time = System.currentTimeMillis();
-			long end_time = 0;			
-			while((end_time - start_time) < TIME_TO_WASTE) {				
+			//long start_time = System.currentTimeMillis();
+			//long end_time = 0;			
+			//while((end_time - start_time) < TIME_TO_WASTE) {				
 				Thread.yield();
 				sleep((long)(Math.random() * TIME_TO_WASTE));
-				//Thread.yield();	
-				end_time = System.currentTimeMillis();
-			}
+				Thread.yield();	
+				//end_time = System.currentTimeMillis();
+			//}
 				
 			System.out.println("Philosopher with ID " + getTID() + " finish thinking");
 			
@@ -100,33 +114,20 @@ public class Philosopher extends BaseThread
 	 */
 	public void talk()
 	{
-		try
-		{
-			// ...
-			//Enter the talking action		
-			System.out.println("Philosopher with ID " + getTID() + " starts talking now! ");
-			
-			//the action time is within 1000
-			long start_time = System.currentTimeMillis();
-			long end_time = 0;			
-			while((end_time - start_time) < TIME_TO_WASTE) {				
-				Thread.yield();
-				sleep((long)(Math.random() * TIME_TO_WASTE));
-				saySomething();
-				//Thread.yield();	
-				end_time = System.currentTimeMillis();
-			}
-				
-			//System.out.println("Philosopher with ID " + getTID() + " finish talking");			
-			
-			// ...
-		}
-		catch(InterruptedException e)
-		{
-			System.err.println("Philosopher.eat():");
-			DiningPhilosophers.reportException(e);
-			System.exit(1);
-		}
+		// ...
+		//Enter the talking action		
+		System.out.println("Philosopher with ID " + getTID() + " starts talking now! ");
+		
+		//the action time is within 1000
+		//long start_time = System.currentTimeMillis();
+		//long end_time = 0;			
+		//while((end_time - start_time) < TIME_TO_WASTE) {				
+			Thread.yield();
+			//sleep((long)(Math.random() * TIME_TO_WASTE));
+			saySomething();
+			Thread.yield();	
+			//end_time = System.currentTimeMillis();
+		//}
 	}
 	
 	
@@ -164,15 +165,23 @@ public class Philosopher extends BaseThread
 				// ...
 			}*/
 			
-			DiningPhilosophers.soMonitor.requestTalk(getTID());
-			talk();
-			DiningPhilosophers.soMonitor.endTalk(getTID());
+			//random talking
+			if((int)(Math.random() * 5.0) == 1){
+				try {
+					DiningPhilosophers.soMonitor.requestTalk(getTID());
+					talk();
+					DiningPhilosophers.soMonitor.endTalk(getTID());
+				}catch (Exception e) {
+					System.err.println("talk():");
+					DiningPhilosophers.reportException(e);
+					System.exit(1);
+				}
+			}
+			yield();
 			
 			//think();
 			System.out.println("==========The philosopher " + getTID() + " ends step # " + (i+1) + "=========");
 			//System.out.println("==========The philosopher " + getTID() + "  status is " + (DiningPhilosophers.soMonitor.getState(getTID())) + " =========");
-			
-
 				
 			//yield();
 		}
@@ -183,7 +192,7 @@ public class Philosopher extends BaseThread
 		DiningPhilosophers.soMonitor.setState(getTID(), Status.DEAD);
 		
 		
-		for(int i = 1; i <= DiningPhilosophers.DEFAULT_NUMBER_OF_PHILOSOPHERS; i++ ) {
+		for(int i = 1; i <= DiningPhilosophers.iPhilosophers; i++ ) {
 			System.out.println("==========The philosopher " + i + "  status is " + (DiningPhilosophers.soMonitor.getState(i)) + " =========");
 			
 

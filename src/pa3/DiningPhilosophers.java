@@ -1,4 +1,5 @@
 package pa3;
+import java.util.Scanner;
 
 /**
  * Class DiningPhilosophers
@@ -13,6 +14,7 @@ public class DiningPhilosophers
 	 * Data members
 	 * ------------
 	 */
+	static int iPhilosophers;
 	
 
 	/**
@@ -36,6 +38,39 @@ public class DiningPhilosophers
 	 * Methods
 	 * -------
 	 */
+	public static int numPhilosphers() {
+		try{
+		//read the input value 
+		Scanner input = new Scanner(System.in);
+		
+		System.out.println("Please enter the number of philosophers: ");
+		String str = input.nextLine();
+		
+		//if no parameter was entered, the program will use the default value
+		if(str.equalsIgnoreCase("")) {
+			System.out.println("Using the default number of philosophers (4).");
+			input.close();
+			return DEFAULT_NUMBER_OF_PHILOSOPHERS;
+		}
+			
+		int numPhilosphers = Integer.parseInt(str);
+		input.close();	
+		
+		if(numPhilosphers <= 0){	
+			System.out.println(numPhilosphers + " is not a positive decimal integer.");
+			//must return integer
+			return DEFAULT_NUMBER_OF_PHILOSOPHERS;
+		} else {
+			return numPhilosphers;
+		}
+		
+		}
+		catch(NumberFormatException e){
+			System.out.println("Using the default number of philosophers (4).");
+			return DEFAULT_NUMBER_OF_PHILOSOPHERS;
+		}
+	}
+	
 
 	/**
 	 * Main system starts up right here
@@ -49,7 +84,8 @@ public class DiningPhilosophers
 			 * Should be settable from the command line
 			 * or the default if no arguments supplied.
 			 */
-			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			//int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			iPhilosophers = numPhilosphers();
 
 			// Make the monitor aware of how many philosophers there are
 			soMonitor = new Monitor(iPhilosophers);
